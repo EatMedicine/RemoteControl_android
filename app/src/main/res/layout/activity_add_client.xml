@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddClientActivity"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_margin"
+        android:layout_gravity="center"
+        android:text="IP地址"
+        android:textSize="@dimen/default_text_size"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="格式范例：127.0.0.0:10000"
+        android:textSize="@dimen/default_text_size"
+        />
+    <EditText
+        android:id="@+id/add_editIP"
+        android:layout_margin="@dimen/default_margin"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:text=""
+        />
+    <Button
+        android:id="@+id/add_btnAdd"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="添加" />
+
+</LinearLayout>

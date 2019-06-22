@@ -1,5 +1,8 @@
 package remotecontrol.eatmedicine.com.remotecontrol_android;
 
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,45 +11,77 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
+
+
+    private List<Map<String,Object>> list;
+    private String[] host={"127.0.0.1","127.0.0.1","127.0.0.1","127.0.0.1","127.0.0.1","127.0.0.1","127.0.0.1","127.0.0.1","127.0.0.1"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_titleAdd).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+
+                Intent i = new Intent();
+                i.setClass(MainActivity.this,AddClientActivity.class);
+                startActivity(i);
             }
         });
+        //更新数据
+        UpdateList();
+
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    public List<Map<String,Object>> getList(List<HostData> list){
+        List<Map<String,Object>> result = new ArrayList<>();
+        for(HostData data:list){
+            if(data.CheckVaild()==false)
+                continue;
+            Map<String,Object> map = new HashMap<>();
+            map.put("id",data.get_id());
+            map.put("host",data.get_host());
+            map.put("port",data.get_port());
+            result.add(map);
         }
+        return result;
+    }
 
-        return super.onOptionsItemSelected(item);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        UpdateList();
+
+    }
+
+    public void UpdateList(){
+        //获取数据
+        SqliteHelper sqlite = new SqliteHelper(this);
+        SQLiteDatabase dbRead = sqlite.getReadableDatabase();
+        Cursor cursor = dbRead.query("HostList",
+                new String[]{"id","host","port"},null,null,null,null,null);
+        List<HostData> hostList = Tools.ConvertCursor(cursor);
+        dbRead.close();
+
+        //设置listView
+        ListView listView = findViewById(R.id.listView_Client);
+        listView.setFastScrollEnabled(false);
+        listView.setVerticalScrollBarEnabled(false);
+        list = getList(hostList);
+        SimpleAdapter sa = new SimpleAdapter(this,list,R.layout.list_item,
+                new String[]{"host"},
+                new int[]{R.id.item_host});
+        listView.setAdapter(sa);
     }
 }
