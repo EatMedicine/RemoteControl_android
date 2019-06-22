@@ -1,5 +1,7 @@
 package remotecontrol.eatmedicine.com.remotecontrol_android;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -23,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private List<Map<String,Object>> list;
-    private String[] host={"127.0.0.1","127.0.0.1","127.0.0.1","127.0.0.1","127.0.0.1","127.0.0.1","127.0.0.1","127.0.0.1","127.0.0.1"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,55 @@ public class MainActivity extends AppCompatActivity {
                 i.setClass(MainActivity.this,AddClientActivity.class);
                 startActivity(i);
             }
+        });
+
+        ListView listView = findViewById(R.id.listView_Client);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ListView listView = (ListView) parent;
+                HashMap<String,Object> data = (HashMap<String,Object>) listView.getItemAtPosition(position);
+                String host = data.get("host").toString();
+                int port = (int)data.get("port");
+
+                Intent i = new Intent();
+                i.setClass(MainActivity.this,ClientControlActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("host",host);
+                bundle.putInt("port",port);
+                i.putExtras(bundle);
+                startActivity(i);
+
+            }
+        });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                ListView listView = (ListView) parent;
+                HashMap<String,Object> data = (HashMap<String,Object>) listView.getItemAtPosition(position);
+                final String listId = (int)data.get("id")+"";
+                AlertDialog alertDialog2 = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("提示")
+                        .setMessage("是否删除该IP")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加"Yes"按钮
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                SqliteHelper sqlite = new SqliteHelper(MainActivity.this);
+                                SQLiteDatabase db = sqlite.getWritableDatabase();
+                                db.delete("HostList","id=?",new String[]{listId});
+                                UpdateList();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {//添加取消
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        }).create();
+                alertDialog2.show();
+                return true;
+            }
+
         });
         //更新数据
         UpdateList();

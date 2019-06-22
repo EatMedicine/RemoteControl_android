@@ -19,7 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddClientActivity"></activity>
+        <activity android:name=".AddClientActivity" />
+        <activity android:name=".ClientControlActivity"></activity>
     </application>
 
 </manifest>

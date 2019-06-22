@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ClientControlActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_text_height"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        >
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/client_IP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/default_text_size"
+            android:text="IP: 127.0.0.1:10000"
+            />
+        <TextView
+            android:id="@+id/client_Status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/default_text_size"
+            android:text="未连接"
+            />
+    </LinearLayout>
+    <ListView
+        android:id="@+id/client_listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/colorGray"
+        android:dividerHeight="1dp"
+        >
+
+
+    </ListView>
+
+
+</LinearLayout>
