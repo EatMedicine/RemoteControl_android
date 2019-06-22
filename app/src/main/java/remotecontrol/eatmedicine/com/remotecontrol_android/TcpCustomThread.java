@@ -1,18 +1,16 @@
 package remotecontrol.eatmedicine.com.remotecontrol_android;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class TcpThread extends Thread {
+public class TcpCustomThread extends Thread{
 
-    private Socket _socket;
+    public Socket _socket;
     private boolean isConnect=false;
     private boolean stopFlag = false;
 
@@ -22,8 +20,9 @@ public class TcpThread extends Thread {
     public int Port=0;
     public TextView txtStatus;
     public Context Context = null;
+    public Thread ListenFunc = null;
 
-    public TcpThread(String ip, int port,TextView txtStatus,Context context){
+    public TcpCustomThread(String ip, int port, TextView txtStatus, android.content.Context context,Thread listen) {
         if(!(0<=port&&port<=65535)){
             if(txtStatus!=null){
                 txtStatus.setText("已连接");
@@ -40,6 +39,7 @@ public class TcpThread extends Thread {
         Port=port;
         Context = context;
         this.txtStatus = txtStatus;
+        this.ListenFunc = listen;
     }
 
     @Override
@@ -47,49 +47,30 @@ public class TcpThread extends Thread {
         super.run();
         if(isConnect==true)
             return;
-        try{
-            if(IP==null){
+        try {
+            if (IP == null) {
                 return;
             }
-            _socket = new Socket(IP,Port);
-            if(_socket!=null){
+            _socket = new Socket(IP, Port);
+            if (_socket != null) {
                 inputStream = _socket.getInputStream();
                 outputStream = _socket.getOutputStream();
                 isConnect = true;
-            }
-            else {
-                if(txtStatus!=null){
+            } else {
+                if (txtStatus != null) {
                     txtStatus.setText("已连接");
                 }
                 return;
             }
-            //监听消息
-            new Thread(){
-                @Override
-                public void run() {
-                    super.run();
-                    try{
-                        while(true){
-                            byte[] buffer = new byte[1024*1024];
-                            int count = inputStream.read(buffer);
-                            if(count == 0)
-                                continue;
-                            String str = new String(buffer);
-                            Toast.makeText(Context,str,Toast.LENGTH_LONG).show();
-                        }
-                    }
-                    catch (Exception e){
-                        isConnect = false;
-                        e.printStackTrace();
-                        return;
-                    }
-                }
-            }.start();
+
+            //监听方法
+            ListenFunc.start();
+
             if(txtStatus!=null){
                 txtStatus.setText("已连接");
             }
-
-        }catch (Exception ex){
+        }
+        catch (Exception ex){
             isConnect=false;
             ex.printStackTrace();
             return;
@@ -128,8 +109,6 @@ public class TcpThread extends Thread {
     }
 
 
-
-
     public boolean isIPAddressByRegex(String str) {
         String regex = "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}";
         // 判断ip地址是否与正则表达式匹配
@@ -143,5 +122,4 @@ public class TcpThread extends Thread {
             return true;
         } else return false;
     }
-
 }

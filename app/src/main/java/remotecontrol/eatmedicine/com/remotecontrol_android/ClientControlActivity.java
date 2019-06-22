@@ -1,8 +1,10 @@
 package remotecontrol.eatmedicine.com.remotecontrol_android;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -42,6 +44,20 @@ public class ClientControlActivity extends AppCompatActivity {
                 new String[]{"name"},
                 new int[]{R.id.function_item_txt1});
         list.setAdapter(sa);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ListView listView = (ListView) parent;
+                HashMap<String,Object> data = (HashMap<String,Object>) listView.getItemAtPosition(position);
+                int commandId = (int)data.get("commandId");
+                Intent i = IntentFactory.getIntent(commandId,ClientControlActivity.this);
+                Bundle bundle = new Bundle();
+                bundle.putString("host",Host);
+                bundle.putInt("port",Port);
+                i.putExtras(bundle);
+                startActivity(i);
+            }
+        });
     }
 
     public List<Map<String,Object>> getList(){
@@ -53,5 +69,11 @@ public class ClientControlActivity extends AppCompatActivity {
             result.add(map);
         }
         return result;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        socket.exit();
     }
 }
