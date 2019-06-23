@@ -59,6 +59,7 @@ public class KillProcessActivity extends AppCompatActivity {
         Port = bundle.getInt("port");
         status = "初始化中";
         handler.sendEmptyMessage(1);
+        int reconnectCount = 0;
         new Thread(){
             @Override
             public void run() {
@@ -79,14 +80,15 @@ public class KillProcessActivity extends AppCompatActivity {
                         outputStream.flush();
                         status = "发送请求成功，等待数据";
                         handler.sendEmptyMessage(1);
+                        byte[] buffer = new byte[1024*1024];
                         while(true){
-                            byte[] buffer = new byte[1024*512];
                             int count = inputStream.read(buffer);
                             if(count == 0)
                                 continue;
                             status = "成功接收数据，数据处理中";
                             handler.sendEmptyMessage(1);
-                            String str = new String(buffer);
+                            String str = new String(buffer,0,count);
+                            Log.i("KILL_PROCESS",str+count);
                             JSONObject jobj = new JSONObject(str);
                             if (jobj.getJSONArray("data")==null)
                                 continue;
@@ -104,7 +106,9 @@ public class KillProcessActivity extends AppCompatActivity {
 
                 }
                 catch (Exception e){
-
+                    status = "数据接受失败";
+                    handler.sendEmptyMessage(1);
+                    finish();
                 }
             }
         }.start();
