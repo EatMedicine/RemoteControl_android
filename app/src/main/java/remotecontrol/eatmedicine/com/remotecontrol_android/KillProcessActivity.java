@@ -21,6 +21,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,6 +101,14 @@ public class KillProcessActivity extends AppCompatActivity {
                                 map.put("name",array.get(count));
                                 result.add(map);
                             }
+                            Collections.sort(result, new Comparator<Map<String, Object>>() {
+                                @Override
+                                public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                                    String str1 = o1.get("name").toString();
+                                    String str2 = o2.get("name").toString();
+                                    return str1.compareTo(str2);
+                                }
+                            });
                             handler.sendEmptyMessage(0);
                             break;
                         }
