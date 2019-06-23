@@ -104,8 +104,8 @@ public class KillProcessActivity extends AppCompatActivity {
                             Collections.sort(result, new Comparator<Map<String, Object>>() {
                                 @Override
                                 public int compare(Map<String, Object> o1, Map<String, Object> o2) {
-                                    String str1 = o1.get("name").toString();
-                                    String str2 = o2.get("name").toString();
+                                    String str1 = o1.get("name").toString().toLowerCase();
+                                    String str2 = o2.get("name").toString().toLowerCase();
                                     return str1.compareTo(str2);
                                 }
                             });
