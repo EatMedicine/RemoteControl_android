@@ -23,8 +23,8 @@ public class ClientControlActivity extends AppCompatActivity {
     public int Port = 0;
     public TcpThread socket = null;
 
-    private String[] FuncName = {"结束进程","发送消息"};
-    private int[] CommandIds = {Tools.COMMAND_ID_KILL_PROCESS,Tools.COMMAND_ID_SEND_MESSAGE};
+    private String[] FuncName = {"结束进程","发送消息","获取电脑共享文件"};
+    private int[] CommandIds = {Tools.COMMAND_ID_KILL_PROCESS,Tools.COMMAND_ID_SEND_MESSAGE,Tools.COMMAND_ID_GET_FILE_LIST};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

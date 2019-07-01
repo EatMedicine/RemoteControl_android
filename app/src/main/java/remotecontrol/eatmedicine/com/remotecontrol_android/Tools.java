@@ -10,6 +10,8 @@ public  class Tools {
     public static final int COMMAND_ID_KILL_PROCESS = 1;
     public static final int COMMAND_ID_GET_PROCESS_LIST = 2;
     public static final int COMMAND_ID_SEND_MESSAGE = 3;
+    public static final int COMMAND_ID_GET_FILE_LIST = 4;
+    public static final int COMMAND_ID_OPEN_FILE = 5;
 
     //判断是否是一个合法的IP
     public static boolean ipCheck(String text) {

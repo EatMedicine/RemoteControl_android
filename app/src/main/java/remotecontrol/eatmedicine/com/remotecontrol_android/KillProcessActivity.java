@@ -87,8 +87,10 @@ public class KillProcessActivity extends AppCompatActivity {
                         byte[] buffer = new byte[1024*1024];
                         while(true){
                             int count = inputStream.read(buffer);
-                            if(count == 0)
+                            if(count == 0){
+                                Thread.sleep(100);
                                 continue;
+                            }
                             status = "成功接收数据，数据处理中";
                             handler.sendEmptyMessage(MSG_CODE_UPDATE_STATUS);
                             String str = new String(buffer,0,count);
