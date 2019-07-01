@@ -285,4 +285,17 @@ public class FileExplorerActivity extends AppCompatActivity {
             finish();
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(socket!=null){
+            try{
+                socket.close();
+            }catch(Exception ex) {
+
+            }
+
+        }
+    }
 }

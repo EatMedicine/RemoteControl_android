@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context=".CmdActivity">
+    <TextView
+        android:id="@+id/send_cmd_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/default_text_size"
+        android:textAlignment="center"
+        android:text="test"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/default_text_size"
+        android:layout_margin="@dimen/default_margin"
+        android:textAlignment="center"
+        android:text="请输入要执行的CMD命令"
+        />
+    <EditText
+        android:id="@+id/send_cmd_editMsg"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        />
+    <Button
+        android:id="@+id/send_cmd_btnSend"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:text="发送"
+        />
+
+</LinearLayout>

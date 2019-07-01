@@ -26,7 +26,8 @@
         <activity android:name=".ClientControlActivity" />
         <activity android:name=".KillProcessActivity" />
         <activity android:name=".SendMessageActivity" />
-        <activity android:name=".FileExplorerActivity"></activity>
+        <activity android:name=".FileExplorerActivity" />
+        <activity android:name=".CmdActivity"></activity>
     </application>
 
 </manifest>

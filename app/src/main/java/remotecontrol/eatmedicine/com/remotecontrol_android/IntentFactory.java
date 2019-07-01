@@ -20,6 +20,10 @@ public class IntentFactory {
             case Tools.COMMAND_ID_GET_FILE_LIST:
                 i.setClass(current,FileExplorerActivity.class);
                 break;
+            //执行CMD命令
+            case Tools.COMMAND_ID_SEND_CMD:
+                i.setClass(current,CmdActivity.class);
+                break;
             default:i = null;break;
         }
         return i;
