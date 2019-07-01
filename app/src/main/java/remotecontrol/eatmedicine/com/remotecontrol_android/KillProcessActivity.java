@@ -29,6 +29,9 @@ import java.util.Map;
 
 public class KillProcessActivity extends AppCompatActivity {
 
+    public static final int MSG_CODE_UPDATE_LIST = 0;
+    public static final int MSG_CODE_UPDATE_STATUS = 1;
+
     public String Host = "";
     public int Port = 0;
     public Socket socket = null;
@@ -60,8 +63,7 @@ public class KillProcessActivity extends AppCompatActivity {
         Host = bundle.getString("host");
         Port = bundle.getInt("port");
         status = "初始化中";
-        handler.sendEmptyMessage(1);
-        int reconnectCount = 0;
+        handler.sendEmptyMessage(MSG_CODE_UPDATE_STATUS);
         new Thread(){
             @Override
             public void run() {
@@ -69,26 +71,26 @@ public class KillProcessActivity extends AppCompatActivity {
                 try{
                     socket = new Socket(Host,Port);
                     status = "建立Socket连接中";
-                    handler.sendEmptyMessage(1);
+                    handler.sendEmptyMessage(MSG_CODE_UPDATE_STATUS);
                     if(socket != null){
                         InputStream inputStream = socket.getInputStream();
                         OutputStream outputStream = socket.getOutputStream();
                         status = "Socket连接成功，获取进程列表请求发送中";
-                        handler.sendEmptyMessage(1);
+                        handler.sendEmptyMessage(MSG_CODE_UPDATE_STATUS);
                         JSONObject obj = new JSONObject();
-                        obj.put("CommandId",2);
+                        obj.put("CommandId",Tools.COMMAND_ID_GET_PROCESS_LIST);
                         String json = obj.toString();
                         outputStream.write(json.getBytes());
                         outputStream.flush();
                         status = "发送请求成功，等待数据";
-                        handler.sendEmptyMessage(1);
+                        handler.sendEmptyMessage(MSG_CODE_UPDATE_STATUS);
                         byte[] buffer = new byte[1024*1024];
                         while(true){
                             int count = inputStream.read(buffer);
                             if(count == 0)
                                 continue;
                             status = "成功接收数据，数据处理中";
-                            handler.sendEmptyMessage(1);
+                            handler.sendEmptyMessage(MSG_CODE_UPDATE_STATUS);
                             String str = new String(buffer,0,count);
                             Log.i("KILL_PROCESS",str+count);
                             JSONObject jobj = new JSONObject(str);
@@ -109,7 +111,7 @@ public class KillProcessActivity extends AppCompatActivity {
                                     return str1.compareTo(str2);
                                 }
                             });
-                            handler.sendEmptyMessage(0);
+                            handler.sendEmptyMessage(MSG_CODE_UPDATE_LIST);
                             break;
                         }
                     }
@@ -117,7 +119,7 @@ public class KillProcessActivity extends AppCompatActivity {
                 }
                 catch (Exception e){
                     status = "数据接受失败";
-                    handler.sendEmptyMessage(1);
+                    handler.sendEmptyMessage(MSG_CODE_UPDATE_STATUS);
                     finish();
                 }
             }
@@ -139,7 +141,7 @@ public class KillProcessActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 try{
                                     JSONObject obj = new JSONObject();
-                                    obj.put("CommandId",1);
+                                    obj.put("CommandId", Tools.COMMAND_ID_KILL_PROCESS);
                                     obj.put("ProcessName",processName);
                                     final String json = obj.toString();
                                     final OutputStream outputStream = socket.getOutputStream();
@@ -158,7 +160,7 @@ public class KillProcessActivity extends AppCompatActivity {
                                     }.start();
                                     Log.i("KILL_PROCESS",result.get(index).get("name").toString());
                                     result.remove(index);
-                                    handler.sendEmptyMessage(0);
+                                    handler.sendEmptyMessage(MSG_CODE_UPDATE_LIST);
                                 }catch (Exception ex){
                                     ex.printStackTrace();
                                 }
@@ -187,7 +189,7 @@ public class KillProcessActivity extends AppCompatActivity {
                 new int[]{R.id.function_item_txt1});
         listView.setAdapter(sa);
         status = "列表显示成功，轻按结束进程";
-        handler.sendEmptyMessage(1);
+        handler.sendEmptyMessage(MSG_CODE_UPDATE_STATUS);
     }
 
     @Override

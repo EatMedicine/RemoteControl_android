@@ -9,8 +9,12 @@ public class IntentFactory {
         Intent i = new Intent();
         switch(CommandId){
             //结束进程
-            case 1:
+            case Tools.COMMAND_ID_KILL_PROCESS:
                 i.setClass(current,KillProcessActivity.class);
+                break;
+            //发送消息
+            case Tools.COMMAND_ID_SEND_MESSAGE:
+                i.setClass(current,SendMessageActivity.class);
                 break;
             default:i = null;break;
         }

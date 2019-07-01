@@ -24,7 +24,8 @@
         </activity>
         <activity android:name=".AddClientActivity" />
         <activity android:name=".ClientControlActivity" />
-        <activity android:name=".KillProcessActivity"></activity>
+        <activity android:name=".KillProcessActivity" />
+        <activity android:name=".SendMessageActivity"></activity>
     </application>
 
 </manifest>
