@@ -18,6 +18,7 @@ public class AddClientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_client);
         final SqliteHelper sqlite = new SqliteHelper(this);
+        //添加IP
         findViewById(R.id.add_btnAdd).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

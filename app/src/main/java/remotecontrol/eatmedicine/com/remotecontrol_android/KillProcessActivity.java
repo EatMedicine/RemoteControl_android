@@ -37,7 +37,7 @@ public class KillProcessActivity extends AppCompatActivity {
     public Socket socket = null;
     public List<Map<String,Object>> result = null;
     private String status = "";
-
+    //用于异步对列表和状态的更新
     public Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {

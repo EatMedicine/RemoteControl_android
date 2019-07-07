@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //设置跳转添加页面
         findViewById(R.id.btn_titleAdd).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,14 +43,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         ListView listView = findViewById(R.id.listView_Client);
+        //添加单击跳转对应IP的控制界面命令
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ListView listView = (ListView) parent;
+                //获取在Item里的Host和Port
                 HashMap<String,Object> data = (HashMap<String,Object>) listView.getItemAtPosition(position);
                 String host = data.get("host").toString();
                 int port = (int)data.get("port");
-
                 Intent i = new Intent();
                 i.setClass(MainActivity.this,ClientControlActivity.class);
                 Bundle bundle = new Bundle();
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        //添加长按删除IP地址的监听器
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
